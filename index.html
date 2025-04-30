@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Black0815xx</title>
+    <style>
+        :root {
+            --primary-color: red;
+            --secondary-color: white;
+            --background-color: black;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: var(--background-color);
+            color: var(--primary-color);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            position: relative;
+        }
+
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;
+            opacity: 0.8;
+        }
+
+        .background-logo {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 60%;
+            height: auto;
+            opacity: 0.2;
+            z-index: -2;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            flex-wrap: wrap;
+        }
+
+        .button-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .button {
+            width: 180px;
+            height: 130px;
+            border: none;
+            color: var(--secondary-color);
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+        }
+
+        .button:hover {
+            transform: scale(1.05);
+        }
+
+        .button img {
+            max-height: 100%;
+            object-fit: contain;
+        }
+
+        .button-twitch {
+            background-color: #6643a7;
+        }
+
+        .button-youtube {
+            background-color: #fa0404;
+        }
+
+        .button-discord {
+            background-color: #5b64f3;
+        }
+
+        .button-label {
+            margin-top: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            color: var(--secondary-color);
+        }
+
+        .title {
+            font-size: 3em;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .autor {
+            position: fixed;
+            color: #a4acb1;
+            background: transparent;
+            left: 10px;
+            transform: translateX(-50%);
+            bottom: 10px;
+            font-size: 14px;
+            text-shadow: 1px 1px 4px rgba(0,0,0,0.5);
+        }
+
+        .ticker {
+            position: absolute;
+            color: var(--primary-color);
+            font-size: 24px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            opacity: 0.8;
+        }
+
+        .ticker-left {
+            left: 0;
+            bottom: -100%; /* Start außerhalb des Bildschirms */
+        }
+
+        .ticker-right {
+            right: 0;
+            bottom: -100%; /* Start außerhalb des Bildschirms */
+        }
+    </style>
+</head>
+<body>
+    <canvas id="fire"></canvas>
+    <img src="logo-black0815xx.png" class="background-logo" alt="Background Logo">
+    
+    <div class="title">
+        Black0815xx - Streamer, Youtuber
+    </div>
+    
+    <div class="button-container">
+        <div class="button-wrapper">
+            <button class="button button-twitch" onclick="window.location.href='https://www.twitch.tv/Black0815xx'">
+                <img src="twitch.png" alt="Twitch Icon">
+            </button>
+            <span class="button-label">Twitch</span>
+        </div>
+
+        <div class="button-wrapper">
+            <button class="button button-youtube" onclick="window.location.href='https://youtube.com/@black0815xx?si=xWxYagdGRkiVQ3BA'">
+                <img src="IMG_0556-removebg-preview.png" alt="YouTube Icon">
+            </button>
+            <span class="button-label">YouTube</span>
+        </div>
+
+        <div class="button-wrapper">
+            <button class="button button-discord" onclick="window.location.href='https://discord.gg/EV65vE2J54'">
+                <img src="discord.png" alt="Discord Icon">
+            </button>
+            <span class="button-label">Discord</span>
+        </div>
+    </div><br>
+    <div class="menu">
+        <button class="button-menu" onclick="window.location.href='aboutme.html'">About Me</button>
+    </div>
+    
+    <div class="autor">
+        <p>Made with ❤️ by Lokrogamer</p>
+        <a href="lokrogaming.github.io/lokrogaming/about-me.html">Show me more!</a>
+    </div>
+
+    <!-- Ticker Elements -->
+    <div class="ticker ticker-left">
+        Black0815xx
+    </div>
+    <div class="ticker ticker-right">
+        Black0815xx
+    </div>
+
+    <script>
+        // Ticker Animation für alle Geräte
+        window.addEventListener('load', () => {
+            const tickerLeft = document.querySelector('.ticker-left');
+            const tickerRight = document.querySelector('.ticker-right');
+            
+            // Setze Anfangspositionen
+            const tickerHeight = 50; // Höhe des Tickers
+            let leftY = window.innerHeight; // Startposition (unten)
+            let rightY = window.innerHeight; // Startposition (unten)
+
+            // Funktion für die Animation
+            function animateTicker() {
+                // Bewege Ticker von unten nach oben
+                leftY -= 1;
+                rightY -= 1;
+
+                // Wenn der Ticker aus dem sichtbaren Bereich verschwindet, zurücksetzen
+                if (leftY < -tickerHeight) leftY = window.innerHeight;
+                if (rightY < -tickerHeight) rightY = window.innerHeight;
+
+                // Wende die neue Position an
+                tickerLeft.style.transform = `translateY(${leftY}px)`;
+                tickerRight.style.transform = `translateY(${rightY}px)`;
+
+                // Animation erneut aufrufen
+                requestAnimationFrame(animateTicker);
+            }
+
+            // Starte die Animation
+            animateTicker();
+        });
+
+        // Fire Animation (unverändert)
+        const canvas = document.getElementById('fire');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            particles = particles.map(() => new Particle());
+        }
+
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.reset();
+            }
+
+            reset() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.radius = Math.random() * 3 + 1;
+                this.speed = Math.random() * 2 + 1;
+                this.wind = Math.random() * 1.5 - 0.75;
+                this.color = this.getRandomFireColor();
+            }
+
+            getRandomFireColor() {
+                const colors = ["#ff4500", "#ff6f1a", "#ff8c00", "#ff0000", "#ffae42"];
+                return colors[Math.floor(Math.random() * colors.length)];
+            }
+
+            update() {
+                this.y += this.speed;
+                this.x += this.wind;
+                if (this.y > height) this.reset();
+                if (this.x > width || this.x < 0) this.reset();
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = this.color;
+                ctx.fill();
+                ctx.closePath();
+            }
+        }
+
+        function createParticles(count) {
+            particles = Array.from({ length: count }, () => new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, width, height);
+            particles.forEach(particle => {
+                particle.update();
+                particle.draw();
+            });
+            requestAnimationFrame(animate);
+        }
+
+        createParticles(150);
+        animate();
+    </script>
+</body>
+</html>
